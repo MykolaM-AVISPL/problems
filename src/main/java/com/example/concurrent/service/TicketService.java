@@ -1,8 +1,11 @@
 package com.example.concurrent.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -23,6 +26,8 @@ public class TicketService {
 	Logger logger = LoggerFactory.getLogger(TicketService.class);
 	@Autowired
 	private TicketRepository repository;
+	@Autowired
+	private TransactionDelegate transactionDelegate;
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
 	public void executeTicketSubmission(DummyTicket dummyTicket, String fieldUpdate) {
@@ -34,6 +39,16 @@ public class TicketService {
 			logger.info("finished update {} {}", Thread.currentThread().getName(), fieldUpdate);
 		} catch (Exception e) {
 			logger.error("failed update {} {} {}", Thread.currentThread().getName(), fieldUpdate,ExceptionUtils.getRootCauseMessage(e));
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void complexTransaction() {
+		Optional<DummyTicket> ticket = transactionDelegate.findTicket(1);
+		if (ticket.isPresent()) {
+			DummyTicket entity = ticket.get();
+			entity.setField2("success");
+			repository.save(entity);
 		}
 	}
 }

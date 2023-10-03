@@ -23,7 +23,6 @@ public class UpdateRunner {
 
 	private ExecutorService executorService = Executors.newFixedThreadPool(100);
 
-	@PostConstruct
 	public void runConcurrentUpdate() {
 		DummyTicket dummyTicket = new DummyTicket();
 		dummyTicket.setId(1);
@@ -31,6 +30,11 @@ public class UpdateRunner {
 		for (int i = 0; i < 100; i++) {
 			executorService.submit(() -> ticketService.executeTicketSubmission(dummyTicket, UUID.randomUUID().toString()));
 		}
+	}
+
+	@PostConstruct
+	public void runComplexTransaction() {
+		ticketService.complexTransaction();
 	}
 
 }
