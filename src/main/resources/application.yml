@@ -1,0 +1,22 @@
+logging:
+  level:
+    root: info
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://0.0.0.0:5432/test_db
+    username: test_user
+    password: test_password
+    hikari:
+      maximum-pool-size: ${TICKET_DB_MAX_CONNECTIONS:5}
+      minimum-idle: ${TICKET_DB_MIN_CONNECTIONS:2}
+  jpa:
+    show-sql: ${TICKET_HIBERNATE_SHOW_SQL:false}
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: ${TICKET_HIBERNATE_DIALECT:org.hibernate.dialect.PostgreSQL10Dialect}
+        jdbc.time_zone: UTC
+        show_sql: ${TICKET_HIBERNATE_SHOW_SQL:false}
+        format_sql: ${TICKET_HIBERNATE_FORMAT_SQL:false}
