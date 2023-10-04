@@ -31,6 +31,8 @@ public class DummyTicket {
 	@Column(name = "field2")
 	private String field2;
 
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = DummyComment.class, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false, updatable = false)
 	private List<DummyComment> dummyComments;
 
 	public Integer getId() {
@@ -57,8 +59,6 @@ public class DummyTicket {
 		this.field2 = field2;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, targetEntity = DummyComment.class, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false, updatable = false)
 	public List<DummyComment> getDummyComments() {
 		return dummyComments;
 	}
