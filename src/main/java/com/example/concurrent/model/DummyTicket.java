@@ -1,8 +1,16 @@
 package com.example.concurrent.model;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /**
@@ -15,12 +23,15 @@ import jakarta.persistence.Table;
 @Table(name = "tickets")
 public class DummyTicket {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
 	@Column(name = "field1")
 	private String field1;
 	@Column(name = "field2")
 	private String field2;
+
+	private List<DummyComment> dummyComments;
 
 	public Integer getId() {
 		return id;
@@ -44,5 +55,15 @@ public class DummyTicket {
 
 	public void setField2(String field2) {
 		this.field2 = field2;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = DummyComment.class, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "ticket_id", referencedColumnName = "id", nullable = false, updatable = false)
+	public List<DummyComment> getDummyComments() {
+		return dummyComments;
+	}
+
+	public void setDummyComments(List<DummyComment> dummyComments) {
+		this.dummyComments = dummyComments;
 	}
 }
