@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table( name = "ticket_comments")
-public class DummyComment {
+public class DummyComment implements Comparable<DummyComment> {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +37,10 @@ public class DummyComment {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	@Override
+	public int compareTo(DummyComment o) {
+		return String.CASE_INSENSITIVE_ORDER.compare(this.comment, o.comment);
 	}
 }
