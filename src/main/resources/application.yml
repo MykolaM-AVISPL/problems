@@ -2,6 +2,11 @@ logging:
   level:
     root: info
 spring:
+  liquibase:
+    url: jdbc:postgresql://0.0.0.0:5432/test_db
+    driver-class-name: org.postgresql.Driver
+    user: test_user
+    password: test_password
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://0.0.0.0:5432/test_db

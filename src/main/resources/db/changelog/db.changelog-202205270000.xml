@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+
+  <changeSet id="start" author="Mykola">
+    <sql>
+      create sequence ticket_comments_seq;
+      alter sequence ticket_comments_seq owner to test_user;
+
+      create table tickets
+      (
+        id     integer not null
+          primary key,
+        field1 varchar(255),
+        field2 varchar(255)
+      );
+
+      alter table tickets
+        owner to test_user;
+
+      create table ticket_comments
+      (
+        ticket_id integer                                                  not null
+          constraint fk_ticket_comments_ticketid
+            references tickets
+            on delete cascade,
+        comment   text,
+        id        integer default nextval('ticket_comments_seq'::regclass) not null
+          constraint pk_ticket_comment
+            primary key
+      );
+
+      INSERT INTO tickets (id, field1, field2)
+      VALUES (1, 'field value', 'field value');
+      alter table ticket_comments
+        owner to test_user;
+    </sql>
+  </changeSet>
+</databaseChangeLog>

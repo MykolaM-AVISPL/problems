@@ -1,0 +1,14 @@
+#This docker file is made for local development only, in order not to contaminate environment-related DB
+version: '3.7'
+
+services:
+
+  quartz-db:
+    image: postgres:13.6-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./src/main/resources/db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
